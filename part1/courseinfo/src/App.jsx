@@ -3,6 +3,17 @@ const Course = ({course}) => {
     <div>
       <Header course={course}/>
       <Content parts={course.parts}/>
+      <Total parts={course.parts}/>
+    </div>
+  )
+}
+
+const Total = ({parts}) => {
+  return (
+    <div>
+      <h1>total of {parts.reduce((accumulator, sum) =>
+         accumulator + sum.exercises
+      , 0)} exercises</h1>
     </div>
   )
 }
