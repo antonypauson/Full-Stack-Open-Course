@@ -13,11 +13,22 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
-    const newPerson = {
-      name: newName
+
+    const isDuplicate = persons.find((person => person.name == newName)) !== undefined
+    console.log(isDuplicate)
+
+    if (!isDuplicate) {
+      const newPerson = {
+        name: newName
+      }
+      setPersons(persons.concat(newPerson))
+      setNewName('')
+    } else {
+      alert(`${newName} is already added!`)
+      setNewName('')
     }
-    setPersons(persons.concat(newPerson))
-    setNewName('')
+    
+    
   }
   return (
     <div>
@@ -34,7 +45,7 @@ const App = () => {
       </form>
       <h1>Numbers</h1>
       {persons.map(person => 
-        <p>{person.name}</p>
+        <p key={person.name}>{person.name}</p>
       )}
     </div>
   )
