@@ -1,5 +1,31 @@
 import { useState } from "react"
 
+const Filter = ({onChange}) => {
+  return (
+    <div>
+      filter shown with <input onChange={onChange}/>
+    </div>
+  )
+}
+
+const PersonForm = ({onSubmit, value1, value2, onChange1, onChange2}) => {
+  return (
+    <div>
+      <form onSubmit={onSubmit}>
+        <div>
+          name: <input value={value1} onChange={onChange1}/>
+        </div>
+        <div>
+          number: <input value={value2} onChange={onChange2}/>
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
 const App = () => {
   
   const [persons, setPersons] = useState([
@@ -56,25 +82,14 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
       <div>
-        filter shown with <input onChange={handleSearch}/>
+        <Filter onChange={handleSearch}/>
       </div>
 
       <h1>add a new</h1>
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={handleChange}/>
-          <br/>
-        </div>
 
-        <div>
-          number: <input value={newNum} onChange={handleChange2}/>
-        </div>
+      <PersonForm onSubmit={addName} value1={newName} value2={newNum} onChange1={handleChange} onChange2={handleChange2}/>
 
-        <div>
-          <button type="submit">add</button>
-        </div>
-
-      </form>
+ 
       <h1>Numbers</h1>
       {filteredNames.map(person => 
         <p key={person.id}>{person.name} {person.number}</p>
