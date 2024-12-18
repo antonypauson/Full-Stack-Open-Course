@@ -42,6 +42,7 @@ const App = () => {
       .then(response => {
         console.log('promise fullfilled')
         setPersons(response.data)
+        setFilteredNames(response.data)
       })
   }, [])
 
@@ -73,10 +74,15 @@ const App = () => {
       const newPerson = {
         name: newName,
         number: newNum,
-        id: persons.length + 1
       }
-      setPersons(persons.concat(newPerson))
-      setFilteredNames(persons.concat(newPerson))
+
+      axios
+        .post('http://localhost:3001/persons', newPerson)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setFilteredNames(persons.concat(response.data))
+        })
+      
     } else {
       alert(`${newName} is already added!`)
     }
