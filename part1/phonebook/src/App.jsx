@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useEffect } from "react"
-import axios from 'axios'
+import noteService from './services/persons'
 
 const Filter = ({onChange}) => {
   return (
@@ -37,12 +37,12 @@ const App = () => {
 
   useEffect(() => {
     console.log('effect')
-    axios 
-      .get('http://localhost:3001/persons')
+    noteService
+      .getAll()
       .then(response => {
         console.log('promise fullfilled')
-        setPersons(response.data)
-        setFilteredNames(response.data)
+        setPersons(response)
+        setFilteredNames(response)
       })
   }, [])
 
@@ -76,11 +76,11 @@ const App = () => {
         number: newNum,
       }
 
-      axios
-        .post('http://localhost:3001/persons', newPerson)
+      noteService
+        .create(newPerson)
         .then(response => {
-          setPersons(persons.concat(response.data))
-          setFilteredNames(persons.concat(response.data))
+          setPersons(persons.concat(response))
+          setFilteredNames(persons.concat(response))
         })
       
     } else {
@@ -88,8 +88,16 @@ const App = () => {
     }
     setNewName('')
     setNewNum('')
-    
-    
+  }
+
+  const deleteName = (id) => {
+    console.log(`${id} will be deleted?`)
+    noteService
+      .deletes(id)
+      .then(response => {
+        setPersons(persons.filter(person => person.id !== id))
+        setFilteredNames(persons.filter(person => person.id !== id))
+      })
   }
   return (
     <div>
@@ -105,7 +113,13 @@ const App = () => {
  
       <h1>Numbers</h1>
       {filteredNames.map(person => 
-        <p key={person.id}>{person.name} {person.number}</p>
+      <>
+        <p key={person.id}>{person.name} {person.number} 
+        <button onClick={() => deleteName(person.id)}>Click</button>
+        </p>
+        
+      </>
+      
       )}
     </div>
   )
