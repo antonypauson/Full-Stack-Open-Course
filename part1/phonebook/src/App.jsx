@@ -69,13 +69,12 @@ const App = () => {
   const addName = (event) => {
     event.preventDefault()
     const isDuplicate = persons.find((person => person.name == newName)) !== undefined
-
+    const isDuplicate2 = persons.find((person => person.name == newName))
     if (!isDuplicate) {
       const newPerson = {
         name: newName,
         number: newNum,
       }
-
       noteService
         .create(newPerson)
         .then(response => {
@@ -84,7 +83,18 @@ const App = () => {
         })
       
     } else {
-      alert(`${newName} is already added!`)
+      if (window.confirm(`${newName} is already added! Do you want to replace?`)) {
+        const id = isDuplicate2.id
+        const person = persons.find(n => n.id === id)
+        const newPerson = {...person, number: newNum}
+        noteService
+          .update(id,newPerson)
+          .then(response => {
+            const updatedPersons = persons.map(person => person.id === id ? response : person)
+            setPersons(updatedPersons)
+            setFilteredNames(updatedPersons)
+          })
+      }
     }
     setNewName('')
     setNewNum('')
@@ -113,12 +123,12 @@ const App = () => {
  
       <h1>Numbers</h1>
       {filteredNames.map(person => 
-      <>
-        <p key={person.id}>{person.name} {person.number} 
+      <div key={person.id}>
+        <p>{person.name} {person.number} 
         <button onClick={() => deleteName(person.id)}>Click</button>
         </p>
         
-      </>
+      </div>
       
       )}
     </div>
