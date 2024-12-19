@@ -25,13 +25,20 @@ const App = () => {
     setEntry(event.target.value)
   }
 
+  const handleShow = (country) => {
+    const selected = countries.find(c => c.name.common === country)
+    if (selected) {
+      setCountries([selected])
+    }
+  }
+
   
   return (
     <div>
       find countries: 
       <input value={newEntry} onChange={handleSearch}/>
 
-      <Countries countries={countries}/>
+      <Countries countries={countries} handleShow={handleShow}/>
     </div>
   )
 }

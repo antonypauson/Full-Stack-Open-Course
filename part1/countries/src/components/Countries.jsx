@@ -1,8 +1,13 @@
-const Countries = ({countries}) => {
+const Countries = ({ countries,handleShow }) => {
     const emoji = {
         fontSize: 250,
         marginTop: 1,
         paddingTop: 1
+    }
+
+    const getDetails = (country) => {
+        
+        
     }
 
     if (countries.length > 10) {
@@ -12,7 +17,9 @@ const Countries = ({countries}) => {
             <div>
                 <ul>
                     {countries.map(c => 
-                        <li>{c.name.official}</li>
+                        <li>{c.name.official}
+                        <button onClick={() => handleShow(c.name.common)}>show</button>
+                        </li>
                     )}
                 </ul>
             </div>
