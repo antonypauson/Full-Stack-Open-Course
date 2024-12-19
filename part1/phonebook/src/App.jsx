@@ -2,6 +2,28 @@ import { useState } from "react"
 import { useEffect } from "react"
 import noteService from './services/persons'
 
+const Notification = ({message}) => {
+  const errorStyle = {
+    color: 'green',
+    fontStyle: 'italic',
+    fontSize: 16,
+    background: 'lightgrey',
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
+  }
+  if (message == null) {
+    return null
+  }
+
+  return (
+    <div className="error" style={errorStyle}>
+      {message}
+    </div>
+  )
+}
+
 const Filter = ({onChange}) => {
   return (
     <div>
@@ -34,6 +56,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNum, setNewNum] = useState('')
   const [filteredNames, setFilteredNames] = useState(persons)
+  const [errorMessage, setError] = useState('error comes here')
 
   useEffect(() => {
     console.log('effect')
@@ -96,6 +119,12 @@ const App = () => {
           })
       }
     }
+    setError(
+      `Added ${newName}`
+    )
+    setTimeout(() => {
+      setError(null)
+    }, 5000)
     setNewName('')
     setNewNum('')
   }
@@ -112,6 +141,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={errorMessage}/>
       <div>
         <Filter onChange={handleSearch}/>
       </div>
